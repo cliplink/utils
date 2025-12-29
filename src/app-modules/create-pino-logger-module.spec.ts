@@ -1,3 +1,4 @@
+import { ValueProvider } from '@nestjs/common';
 import { Params } from 'nestjs-pino';
 
 import { createPinoLoggerModule } from './create-pino-logger-module';
@@ -9,7 +10,10 @@ describe('createPinoLoggerModule', () => {
 
     const providers = module.providers;
     expect(providers).toBeDefined();
-    const paramsProvider = providers?.find((p) => p && p.provide === 'pino-params');
+    const paramsProvider = providers?.find(
+      (p): p is ValueProvider =>
+        !!p && typeof p === 'object' && 'provide' in p && p.provide === 'pino-params',
+    );
     expect(paramsProvider).toBeDefined();
   });
 
@@ -18,9 +22,16 @@ describe('createPinoLoggerModule', () => {
     const module = createPinoLoggerModule(customOpts);
 
     const providers = module.providers;
-    const paramsProvider = providers?.find((p) => p && p.provide === 'pino-params');
+    const paramsProvider = providers?.find(
+      (p): p is ValueProvider =>
+        !!p && typeof p === 'object' && 'provide' in p && p.provide === 'pino-params',
+    );
 
-    const mergedLevel = paramsProvider?.useValue.pinoHttp.level;
+    const mergedLevel = (
+      paramsProvider?.useValue as {
+        pinoHttp: { level: string };
+      }
+    ).pinoHttp?.level;
     expect(mergedLevel).toBe('debug');
   });
 });
