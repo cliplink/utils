@@ -1,15 +1,14 @@
-import { SharedBullAsyncConfiguration } from '@nestjs/bullmq';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModuleAsyncOptions, TypeOrmModuleOptions } from '@nestjs/typeorm';
 
-export function createTypeOrmModule<T extends Record<string, never>>(
+export function createTypeOrmModule<T>(
   configKey: keyof T,
-  options?: SharedBullAsyncConfiguration,
+  options?: Partial<TypeOrmModuleOptions>,
 ): TypeOrmModuleAsyncOptions {
   return {
     imports: [ConfigModule],
     inject: [ConfigService],
-    useFactory: (configService: ConfigService<T>) => {
+    useFactory: (configService: ConfigService) => {
       const opts = configService.getOrThrow<TypeOrmModuleOptions>(configKey as string);
 
       if (!opts) throw new Error('Database config is missing');
@@ -18,7 +17,7 @@ export function createTypeOrmModule<T extends Record<string, never>>(
         autoLoadEntities: true,
         ...opts,
         ...options,
-      };
+      } as TypeOrmModuleOptions;
     },
   };
 }
