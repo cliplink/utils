@@ -5,10 +5,16 @@ permissions:
   packages: write
 
 on:
-  workflow_call:
+  push:
+    branches:
+      - main
 
 jobs:
-  publish:
+  linter-and-tests:
+    uses: ./.github/workflows/tests.yaml
+
+  npm-package-publish:
+    needs: linter-and-tests
     runs-on: ubuntu-latest
 
     steps:
