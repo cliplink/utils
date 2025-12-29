@@ -1,8 +1,8 @@
-import {SharedBullAsyncConfiguration} from '@nestjs/bullmq';
-import {ConfigModule, ConfigService} from '@nestjs/config';
-import type {QueueOptions} from 'bullmq';
+import { SharedBullAsyncConfiguration } from '@nestjs/bullmq';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import type { QueueOptions } from 'bullmq';
 
-export function createBullMqModule<T extends Record<string, any>>(
+export function createBullMqModule<T extends Record<string, never>>(
   configKey: keyof T,
 ): SharedBullAsyncConfiguration {
   return {
