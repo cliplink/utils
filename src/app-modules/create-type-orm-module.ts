@@ -1,9 +1,8 @@
+import { SharedBullAsyncConfiguration } from '@nestjs/bullmq';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { TypeOrmModuleOptions, TypeOrmModuleAsyncOptions } from '@nestjs/typeorm';
+import { TypeOrmModuleAsyncOptions, TypeOrmModuleOptions } from '@nestjs/typeorm';
 
-import {SharedBullAsyncConfiguration} from "@nestjs/bullmq";
-
-export function createTypeOrmModule<T extends Record<string, any>>(
+export function createTypeOrmModule<T extends Record<string, never>>(
   configKey: keyof T,
   options?: SharedBullAsyncConfiguration,
 ): TypeOrmModuleAsyncOptions {
@@ -21,5 +20,5 @@ export function createTypeOrmModule<T extends Record<string, any>>(
         ...options,
       };
     },
-  }
+  };
 }

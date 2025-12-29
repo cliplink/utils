@@ -1,5 +1,4 @@
-import {LoggerModule, Params} from 'nestjs-pino';
-
+import { LoggerModule, Params } from 'nestjs-pino';
 
 export const createPinoLoggerModule = (opts?: Params) => {
   return LoggerModule.forRoot({
@@ -8,9 +7,9 @@ export const createPinoLoggerModule = (opts?: Params) => {
       transport:
         process.env.NODE_ENV !== 'production'
           ? {
-            target: 'pino-pretty',
-            options: {colorize: true},
-          }
+              target: 'pino-pretty',
+              options: { colorize: true },
+            }
           : undefined,
       serializers: {
         req(req) {
@@ -22,6 +21,6 @@ export const createPinoLoggerModule = (opts?: Params) => {
         },
       },
     },
-    ...opts
-  })
-}
+    ...opts,
+  });
+};

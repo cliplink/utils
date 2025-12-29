@@ -1,7 +1,7 @@
-// test/bullmq-factory.spec.ts
-import {ConfigService} from '@nestjs/config';
-import {createBullMqModule} from './create-bull-mq-module';
-import type {QueueOptions} from 'bullmq';
+import { ConfigService } from '@nestjs/config';
+import type { QueueOptions } from 'bullmq';
+
+import { createBullMqModule } from './create-bull-mq-module';
 
 interface TestConfig {
   redis: {
@@ -14,7 +14,7 @@ describe('createBullMqModule', () => {
   it('should return SharedBullAsyncConfiguration with correct connection options', async () => {
     const configKey: keyof TestConfig = 'redis';
     const mockConfigService = {
-      getOrThrow: jest.fn().mockReturnValue({host: '127.0.0.1', port: 6379}),
+      getOrThrow: jest.fn().mockReturnValue({ host: '127.0.0.1', port: 6379 }),
     } as unknown as ConfigService<TestConfig>;
 
     const bullConfig = createBullMqModule<TestConfig>(configKey);
@@ -31,7 +31,6 @@ describe('createBullMqModule', () => {
       },
     });
 
-    // Проверяем, что getOrThrow вызван с правильным ключом
     expect(mockConfigService.getOrThrow).toHaveBeenCalledWith('redis');
   });
 
