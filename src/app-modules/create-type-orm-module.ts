@@ -1,11 +1,12 @@
+import { DynamicModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { TypeOrmModuleAsyncOptions, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 export function createTypeOrmModule<T>(
   configKey: keyof T,
   options?: Partial<TypeOrmModuleOptions>,
-): TypeOrmModuleAsyncOptions {
-  return {
+): DynamicModule {
+  return TypeOrmModule.forRootAsync({
     imports: [ConfigModule],
     inject: [ConfigService],
     useFactory: (configService: ConfigService) => {
@@ -19,5 +20,5 @@ export function createTypeOrmModule<T>(
         ...options,
       } as TypeOrmModuleOptions;
     },
-  };
+  });
 }
